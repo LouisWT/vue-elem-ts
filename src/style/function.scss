@@ -1,0 +1,275 @@
+// 如果使用 @include center-block(true); 也就是 extend 方式调用，那么样式声明可以被多个类名复用
+// 如果使用 @include center-block(false); 就是 mixin 方式调用，那么样式一定会出现在调用的地方
+// mixin 使用 @mixin 来定义，使用 @include 使用
+// extend 使用 % 来定义，使用 @extend 来使用
+
+// 1. 水平居中一个块级元素
+// 2.将一个元素进行 fixed 定位
+// 3.左右对齐(顶到边)
+// 4.使用 flex 布局来让多个子元素来平分空间并铺满
+// 5.多个元素平分空间并铺满,并且可以设置容器的 padding-left padding-right 和子元素的间隔
+// 6.使用 flex 进行居中
+// 7.给 img 的容器使用,使得 img 或者其他子元素可以撑满容器
+// 8. 清除浮动
+
+// 9. 在显示区域不够时，显示 部分文字 + ...
+// 10. 多行文本显示时，如果多行文本最终超过了显示区域
+// 11. 折行的时候，即使会让英文单词不连贯也会折行
+// 12. 元素无法点击并且无法成为鼠标事件的目标
+// 13.生成一个方向的简单箭头,有上下左右四个方向
+// 14.按钮的基本样式
+
+// 1. 水平居中一个块级元素
+@mixin center-block($extend: true) {
+  @if $extend {
+    @extend %center-block;
+  }
+
+  @else {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+%center-block {
+  @include center-block(false);
+}
+
+
+// 2.将一个元素进行 fixed 定位
+// 如果传入数字，那么是元素距离视口上方的距离
+// 如果传入 all,那么元素会覆盖整个视口
+// 如果传入 bottom,那么元素会在视口下方
+@mixin fixed($pos: 0) {
+  position: fixed;
+  left: 0;
+  right: 0;
+
+  @if $pos==bottom {
+    bottom: 0;
+  }
+
+  @else if $pos==all {
+    top: 0;
+    bottom: 0;
+  }
+
+  @else {
+    top: $pos;
+  }
+}
+
+%fixed-top {
+  @include fixed;
+}
+
+%fixed-bottom {
+  @include fixed(bottom);
+}
+
+// 3.左右对齐(顶到边)
+@mixin justify($extend: true) {
+  @if $extend {
+    @extend %justify;
+  }
+
+  @else {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+%justify {
+  @include justify(false);
+}
+
+// 4.使用 flex 布局来让多个子元素来平分空间并铺满
+@mixin equal-flex($child: 'li') {
+  display: flex;
+
+  #{unquote($child)} {
+    flex: 1;
+    width: 1%;
+  }
+}
+
+// 5.多个元素平分空间并铺满,并且可以设置容器的 padding-left padding-right 和子元素的间隔
+@mixin line-equal-gap($gap: 10px, $child: 'li', $lr: true) {
+  display: flex;
+
+  @if $lr {
+    padding-left: $gap;
+    padding-right: $gap;
+  }
+
+  #{unquote($child)} {
+    flex: 1;
+    width: 1%;
+
+    &:not(:first-of-type) {
+      margin-left: $gap;
+    }
+  }
+}
+
+// 6.使用 flex 进行居中
+@mixin center-flex($direction: both) {
+  display: flex;
+
+  @if $direction==both {
+    justify-content: center;
+    align-items: center;
+  }
+
+  @else if $direction==x {
+    justify-content: center;
+  }
+
+  @else if $direction==y {
+    align-items: center;
+  }
+}
+
+// 7.给 img 的容器使用,使得 img 或者其他子元素可以撑满容器
+@mixin object-wrap($percent: 100%, $child: 'img') {
+  position: relative;
+  padding-top: $percent;
+  height: 0;
+
+  #{unquote($child)} {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+  }
+}
+
+// 8. 清除浮动
+@mixin clearfix($extend: true) {
+  @if $extend {
+    @extend %clearfix;
+  }
+
+  @else {
+
+    &::before,
+    &::after {
+      content: "";
+      display: table;
+    }
+
+    &::after {
+      clear: both;
+    }
+  }
+}
+
+%clearfix {
+  @include clearfix(false);
+}
+
+// 9. 在显示区域不够时，显示 部分文字 + ...
+@mixin ellipsis($extend: true) {
+  @if $extend {
+    @extend %ellipsis;
+  }
+
+  @else {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
+
+%ellipsis {
+  @include ellipsis(false);
+}
+
+// 10. 多行文本显示时，如果多行文本最终超过了显示区域
+// 超出的部分显示为 ...
+// 这个兼容性不咋样
+@mixin ellipsis-lines($lines: 2) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+}
+
+// 11. 折行的时候，即使会让英文单词不连贯也会折行
+@mixin word-break($extend: true) {
+  @if $extend {
+    @extend %word-break;
+  }
+
+  @else {
+    white-space: normal;
+    word-wrap: break-word;
+    word-break: break-all;
+  }
+}
+
+%word-break {
+  @include word-break(false);
+}
+
+// 12. 元素无法点击并且无法成为鼠标事件的目标
+// 当元素被 disable 时，应用的样式
+$colorDisabled: (text: #999, bg: #e3e3e3, border: #dbdbdb) !default; // textColor bgColor borderColor
+
+@mixin disabled($colorText: map-get($colorDisabled, text), $colorBg: map-get($colorDisabled, bg), $colorBorder: false) {
+  background-color: $colorBg !important;
+  color: $colorText !important;
+  cursor: default !important;
+  pointer-events: none !important;
+
+  @if $colorBorder {
+    border: 1px solid map-get($colorDisabled, border);
+  }
+}
+
+%disabled {
+  @include disabled;
+}
+
+// 13.生成一个方向的简单箭头,有上下左右四个方向
+@mixin v-arrow($direction: right, $borderWidth: 2px, $size: 10px) {
+  display: inline-block;
+  vertical-align: middle;
+  width: $size;
+  height: $size;
+  @if $direction == top {
+      border-top: $borderWidth solid currentColor;
+      border-right: $borderWidth solid currentColor;
+      transform: rotate(-45deg);
+  }
+  @else if $direction == right {
+      border-top: $borderWidth solid currentColor;
+      border-right: $borderWidth solid currentColor;
+      transform: rotate(45deg);
+  }
+  @else if $direction == bottom {
+      border-left: $borderWidth solid currentColor;
+      border-bottom: $borderWidth solid currentColor;
+      transform: rotate(-45deg);
+  }
+  @if $direction == left {
+      border-left: $borderWidth solid currentColor;
+      border-bottom: $borderWidth solid currentColor;
+      transform: rotate(45deg);
+  }
+}
+
+// 14.按钮的基本样式
+%btn-basic {
+  display: inline-block;
+  vertical-align: middle;
+  cursor: pointer;
+  text-align: center;
+  border: 1px solid transparent;
+  box-sizing: border-box;
+  user-select: none;
+  padding: 0 1em;
+  white-space: nowrap;
+}

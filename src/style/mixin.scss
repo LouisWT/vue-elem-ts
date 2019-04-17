@@ -1,5 +1,5 @@
 // 全局样式
-$blue: #3190e8;  
+$blue: #3190e8;
 $bc: #e4e4e4;
 $fc:#fff;
 
@@ -11,10 +11,6 @@ $fc:#fff;
 }
 
 @mixin borderRadius($radius) {
-  -webkit-border-radius: $radius;
-  -moz-border-radius: $radius;
-  -ms-border-radius: $radius;
-  -o-border-radius: $radius;
   border-radius: $radius;
 }
 //定位全屏
@@ -25,7 +21,7 @@ $fc:#fff;
 }
 
 //定位上下左右居中
-@mixin center {  
+@mixin center {
 	position: absolute;
 	top: 50%;
   left: 50%;
@@ -33,14 +29,14 @@ $fc:#fff;
 }
 
 //定位上下居中
-@mixin ct {  
+@mixin ct {
 	position: absolute;
 	top: 50%;
   transform: translateY(-50%);
 }
 
 //定位左右居中
-@mixin cl {  
+@mixin cl {
 	position: absolute;
 	left: 50%;
   transform: translateX(-50%);
@@ -67,5 +63,4 @@ $fc:#fff;
 @mixin fj($type: space-between){
 	display: flex;
 	justify-content: $type;
-
 }
