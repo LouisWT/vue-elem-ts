@@ -65,14 +65,15 @@ export default class Header extends Vue {
   top: 0;
   z-index: 100;
   background-color: $blue;
+  display: flex;
+  align-items: center;
 }
 .header-goback {
-  position: absolute;
-  transform: translateY(50%);
   margin-left: .4rem;
   width: 0.6rem;
   height: 1rem;
   display: flex;
+  justify-content: center;
   align-items: center;
   svg {
     width: 0.6rem;

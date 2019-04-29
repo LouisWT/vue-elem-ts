@@ -55,7 +55,7 @@
 3. 所有异步操作都放在 services 中统一管理（暂时）
 
 #### 3.2 .vue 文件编写
-1.  首先把组件或者 View 需要的 prop\data\state\action 等等写好，将组件的逻辑大致写好
-2.  写 template，把页面骨架写好
-3.  写 style，给骨架应用样式
+1.  写 template，把页面骨架写好
+2.  写 style，给骨架应用样式
+3.  把组件或者 View 需要的 prop\data\state\action 等等写好，将组件的逻辑大致写好
 4.  调试交互逻辑之类的

@@ -29,3 +29,25 @@ export const cityHot = () => {
 export const cityGroup = () => {
   return http.Get('/v1/cities', { type: 'group' });
 };
+
+/**
+ * 获取验证码
+ */
+interface CaptchasRes {
+  code: string;
+}
+export const getCaptchas = async () => {
+  const res: CaptchasRes = await http.Post('/v1/captchas', {});
+  return res;
+};
+
+/**
+ * 短信验证码
+ */
+export const postMobileCode = (phone: string) => {
+  return http.Post('/v4/mobile/verify_code/send', {
+    mobile: phone,
+    scene: 'login',
+    type: 'sms',
+  });
+};
